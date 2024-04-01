@@ -1,3 +1,5 @@
+<img src="https://github.com/Qcarvalhooliveira/holbertonschool-files_manager/blob/main/image/Files-Manager.png" width="1000" height="300">>
+
 # **Files Manager** :computer:
 
 ## **Description** :speech_balloon:
