@@ -286,6 +286,8 @@ Update the endpoint GET /files/:id/data to accept a query parameter size:
 
 * **Queise Carvalho de Oliveira** - [Linkedin](https://www.linkedin.com/in/queise-carvalho-de-oliveira-50359749/)
 
+* **Jérôme BERNARD** - [Linkedin](https://www.linkedin.com/in/j%C3%A9r%C3%B4me-bernard-54069b254/)
+
 
 ## License :page_with_curl:
 This project is licensed under the [MIT License](https://opensource.org/license/mit/).
