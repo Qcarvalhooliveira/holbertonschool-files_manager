@@ -15,8 +15,22 @@ class DBClient {
     MongoClient.connect(url, { useUnifiedTopology: true }, (error, client) => {
       if (error) console.log(error);
       this.db = client.db(database);
-      this.db.createCollection('users');
-      this.db.createCollection('files');
+      (async () => {
+        try {
+          const collections = await this.db.listCollections().toArray();
+          const collectionNames = collections.map((col) => col.name);
+
+          if (!collectionNames.includes('users')) {
+            await this.db.createCollection('users');
+          }
+
+          if (!collectionNames.includes('files')) {
+            await this.db.createCollection('files');
+          }
+        } catch (err) {
+          console.error('Failed to create collections', err);
+        }
+      })();
     });
   }
 
