@@ -59,5 +59,4 @@ class DBClient {
 }
 
 // Create and export an instance of DBClient
-const dbClient = new DBClient();
-export default dbClient;
+module.exports = new DBClient();
