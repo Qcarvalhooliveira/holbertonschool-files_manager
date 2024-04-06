@@ -7,7 +7,7 @@ class AuthController {
   static async getConnect(req, res) {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Basic ')) {
+    if (!authHeader || !authHeader.startsWith('Basic')) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
