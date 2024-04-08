@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "lint": "./node_modules/.bin/eslint",
+        "lint-fix": "eslint --fix .",
         "check-lint": "lint [0-9]*.js",
         "start-server": "nodemon --exec babel-node --presets @babel/preset-env ./server.js",
         "start-worker": "nodemon --exec babel-node --presets @babel/preset-env ./worker.js",
