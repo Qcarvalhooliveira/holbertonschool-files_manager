@@ -68,12 +68,15 @@ class FilesController {
 
     const buff = Buffer.from(fileData, 'base64');
     const pathFile = `${pathDir}/${fileUuid}`;
-    try {
-      await fs.mkdir(pathDir, { recursive: true });
-      await fs.writeFile(pathFile, buff);
-    } catch (error) {
-      return res.status(400).send({ error: error.message });
-    }
+
+    // eslint-disable-next-line consistent-return
+    fs.mkdir(pathDir, { recursive: true }, (error) => {
+      if (error) return res.status(400).send({ error: error.message });
+      // eslint-disable-next-line consistent-return
+      fs.writeFile(pathFile, buff, (error) => {
+        if (error) return res.status(400).send({ error: error.message });
+      });
+    });
 
     fileDataDb.localPath = pathFile;
     await DBClient.db.collection('files').insertOne(fileDataDb);
