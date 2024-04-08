@@ -1,7 +1,5 @@
 // utils/db.js
 
-// Import MongoDB client
-
 import { MongoClient } from 'mongodb';
 
 const host = process.env.DB_HOST || 'localhost';
@@ -55,6 +53,12 @@ class DBClient {
   async nbFiles() {
     // Count number of documents in 'files' collection
     return this.db.collection('files').countDocuments();
+  }
+
+  async saveFile(fileData) {
+    // Insert a new document into the 'files' collection
+    const result = await this.db.collection('files').insertOne(fileData);
+    return { _id: result.insertedId, ...fileData };
   }
 }
 
