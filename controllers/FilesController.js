@@ -171,6 +171,52 @@ class FilesController {
 
     return response.send(filesArray);
   }
+
+  static async putPublish(req, res) {
+    const {id} = req.params;
+    const user = await FilesController.getUserFromToken(req);
+
+    if (!user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+  
+      const file = await DBClient.db.collection('files').findOne({ _id: ObjectId(id), userId: user._id });
+  
+      if (!file) {
+        return res.status(404).json({ error: 'Not found' });
+      }
+  
+      await DBClient.db.collection('files').updateOne({ _id: ObjectId(id) }, { $set: { isPublic: true } });
+  
+      return res.status(200).json(file);
+    }
+  
+    static async putUnpublish(req, res) {
+      const { id } = req.params;
+      const user = await FilesController.getUserFromToken(req);
+  
+      if (!user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+  
+      const file = await DBClient.db.collection('files').findOne({ _id: ObjectId(id), userId: user._id });
+  
+      if (!file) {
+        return res.status(404).json({ error: 'Not found' });
+      }
+  
+      await DBClient.db.collection('files').updateOne({ _id: ObjectId(id) }, { $set: { isPublic: false } });
+  
+      return res.status(200).json(file);
+    }
+  
+    static async getUserFromToken(req) {
+      const token = req.header('X-Token') || null;
+      if (!token) return null;
+  
+      const user = await DBClient.db.collection('users').findOne({ token });
+      return user;
+    }
 }
 
 module.exports = FilesController;
