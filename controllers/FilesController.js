@@ -6,6 +6,8 @@ const { ObjectId } = require('mongodb');
 const fs = require('fs');
 const Bull = require('bull');
 const mime = require('mime-types');
+const path = require('path');
+
 
 class FilesController {
   static async postUpload(req, res) {
@@ -86,6 +88,10 @@ class FilesController {
       userId: fileDataDb.userId,
       fileId: fileDataDb._id,
     });
+
+    if (fileType === 'image') {
+      fileQueue.add({ userId: user._id, fileId: fileDataDb._id });
+    }
 
     return res.status(201).send({
       id: fileDataDb._id,
@@ -282,14 +288,22 @@ class FilesController {
         .send({ error: "A folder doesn't have content" });
     }
 
+    // If size is specified, append it to the filename
+    const fileName = size === 0 ? fileDocument.name : `${fileDocument.name}_${size}`;
+
     const realPath = size === 0 ? fileDocument.localPath : `${fileDocument.localPath}_${size}`;
 
     try {
+      // Check if the file exists
+      await fs.access(realPath);
+
+      // If the file exists, send it
       const dataFile = fs.readFileSync(realPath);
       const mimeType = mime.contentType(fileDocument.name);
       response.setHeader('Content-Type', mimeType);
       return response.send(dataFile);
     } catch (error) {
+      // If the file doesn't exist, return a 404 error
       return response.status(404).send({ error: 'Not found' });
     }
   }
