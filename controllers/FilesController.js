@@ -188,7 +188,7 @@ class FilesController {
 
     await DBClient.db.collection('files').updateOne({ _id: ObjectId(id) }, { $set: { isPublic: true } });
   
-      return res.status(200).json(file);
+    return res.status(200).json(file);
   }
 
   static async putUnpublish(req, res) {
